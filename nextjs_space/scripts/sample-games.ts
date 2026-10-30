@@ -17,8 +17,14 @@ export const SAMPLE_GAMES = [
   {
     slug: 'checkers',
     name: 'Checkers',
-    description: 'Classic checkers (English draughts) — play the computer or a friend on the same device.',
+    description: 'Classic checkers (English draughts) — play a friend or the computer (levels 1–10), with Undo, Suggest and move-by-move commentary.',
     dir: 'checkers',
+  },
+  {
+    slug: 'gomoku',
+    name: 'Gomoku',
+    description: 'Five in a row on a 15×15 board — play a friend or the computer (levels 1–10), with Undo, Suggest and move-by-move commentary.',
+    dir: 'gomoku',
   },
 ];
 
@@ -51,7 +57,7 @@ export async function installSampleGames(prisma: PrismaClient) {
     }
     await prisma.game.upsert({
       where: { slug: g.slug },
-      update: { cloudStoragePath: basePath },
+      update: { cloudStoragePath: basePath, description: g.description },
       create: { name: g.name, slug: g.slug, description: g.description, cloudStoragePath: basePath, isPublic: true },
     });
     console.log(`Sample game installed: ${g.slug}`);

@@ -31,11 +31,25 @@
 6. Refresh the page → game resumes; guest (logged out) can also play.
 7. Checkmate / stalemate / resign show the correct result and disable moves.
 
+## Manual – Game upload (Gomoku sample)
+
+1. As admin, upload `samples/gomoku.zip` (slug `gomoku`, or any unused slug) → 201 with 3 files; within ~10 s the home page shows the *Gomoku* card without reloading, and `/games/<slug>` loads the board.
+2. Click a point → a black stone appears, the move is graded in Commentary, and the computer replies with White.
+3. Suggest → a purple marker shows the suggested point and the hint text explains it.
+4. Undo vs computer → both the computer's reply and your move are removed; in two-player mode only one move is removed.
+5. Make five in a row → the winning line is highlighted and the status shows the winner; the board is locked until New game.
+6. Level 1 should make obvious mistakes (graded Mistake/Blunder); level 10 should block every four and punish open threes.
+7. Refresh → the game, level and commentary are restored.
+
+Headless check (used during development): drive `game.js` with a minimal DOM stub in node, playing Suggest vs each level – levels 1, 5 and 10 all finish a game, and Undo returns to Black's turn.
+
 ## Manual – Game upload (Checkers sample)
 
-1. After `yarn prisma db seed`, the home page lists *Checkers* and `/games/checkers` loads the board in the iframe.
+1. After `yarn prisma db seed`, the home page lists *Checkers* and *Gomoku*, and `/games/checkers` loads the board in the iframe.
 2. Keep the home page open in one tab; in another, upload `samples/checkers.zip` from `/admin` with slug `checkers-2` → the new card appears on the home page within ~10 s without reloading.
 3. Vs computer: a capture is forced when available; multi-jumps continue; the computer replies as black.
 4. Reach the far row → piece is crowned and moves backwards.
-5. Undo restores the previous position; refresh resumes the game; New game resets.
-6. Switch mode to *Second player* → both colours are moved by hand.
+5. Undo restores the previous position (vs computer: back to Red's turn); refresh resumes the game with its commentary; New game resets.
+6. Switch mode to *Second player* → both colours are moved by hand and the Level select is hidden.
+7. Suggest highlights the from/to squares and explains the move; every move gets a grade, eval (Red's view) and explanation in Commentary.
+8. Levels 1–10: level 1 plays loosely; level 10 searches up to 8 plies within ~1.8 s per move.

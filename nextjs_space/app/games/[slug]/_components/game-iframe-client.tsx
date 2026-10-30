@@ -10,11 +10,12 @@ type Props = {
     slug: string;
     description: string | null;
   };
+  version: string;
 };
 
-export function GameIframeClient({ game }: Props) {
+export function GameIframeClient({ game, version }: Props) {
   const [fullscreen, setFullscreen] = useState(false);
-  const iframeSrc = `/api/games/serve/${game.slug}/index.html`;
+  const iframeSrc = `/api/games/serve/${game.slug}/index.html?v=${version}`;
 
   return (
     <div className={fullscreen ? 'fixed inset-0 z-50 bg-background' : 'max-w-[1200px] mx-auto px-4 py-8'}>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gomoku · HostedGames sample</title>
+  <link rel="stylesheet" href="style.css?v=1" />
+</head>
+<body>
+  <main class="layout">
+    <section class="board-wrap">
+      <div id="board" aria-label="Gomoku board"></div>
+    </section>
+    <aside class="panel">
+      <h1>Gomoku</h1>
+      <div class="controls">
+        <label>Opponent
+          <select id="mode">
+            <option value="ai">Computer</option>
+            <option value="human">Second player (same device)</option>
+          </select>
+        </label>
+        <label id="level-wrap">Level
+          <select id="level"></select>
+        </label>
+      </div>
+      <div class="buttons">
+        <button id="undo">Undo</button>
+        <button id="suggest" class="primary">Suggest</button>
+        <button id="restart">New game</button>
+      </div>
+      <p id="status" role="status"></p>
+      <p id="hint" class="hint"></p>
+      <h2>Commentary</h2>
+      <ol id="notes" class="notes"></ol>
+      <p class="help">Black moves first (vs the computer you are Black). Get five or more stones in a row — across, down or diagonally. Every move is graded; a positive eval favours Black.</p>
+    </aside>
+  </main>
+  <script src="game.js?v=1"></script>
+</body>
+</html>

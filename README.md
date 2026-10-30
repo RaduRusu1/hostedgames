@@ -25,7 +25,9 @@ nextjs_space/
   scripts/sample-games.ts installs samples/* into cloud storage + games table
 samples/
   checkers/            sample uploadable game (index.html, style.css, game.js)
-  checkers.zip         ready-to-upload zip of the sample
+  checkers.zip         ready-to-upload zip of the checkers sample
+  gomoku/              sample uploadable game (index.html, style.css, game.js)
+  gomoku.zip           ready-to-upload zip of the gomoku sample
 docs/
   PLANNING.md          requirements & design decisions
   IMPLEMENTATION.md    architecture & module notes
@@ -33,9 +35,14 @@ docs/
   TEST_PLAN.md         manual + automated test plan
 ```
 
-## Sample game: Checkers
+## Sample games: Checkers and Gomoku
 
-`samples/checkers` is a plain HTML/JS checkers (English draughts) game – vs the computer or a second player on the same device, with mandatory captures, multi-jumps, kings and Undo. It is installed automatically by the seed (`yarn prisma db seed` runs `scripts/sample-games.ts`, which uploads `samples/checkers/*` to cloud storage and upserts the `checkers` row in `games`) and is playable at `/games/checkers`. You can also upload it manually: **Admin → Upload game** → `samples/checkers.zip` with any unused slug. Uploaded zips must have `index.html` at the root.
+Both samples are plain HTML/CSS/JS games with the same feature set: play a second player on the same device or the computer at **levels 1–10**, **Undo** (vs the computer it takes back to your last move), **Suggest** (highlights the engine's best move with an explanation) and a **Commentary** panel that grades every move (Best / Excellent / Good / Inaccuracy / Mistake / Blunder / Forced) with an evaluation and a short explanation.
+
+- `samples/checkers` – English draughts: mandatory captures, multi-jumps, kings. Playable at `/games/checkers`.
+- `samples/gomoku` – five in a row on a 15×15 board (Black moves first, five or more wins). Playable at `/games/gomoku`.
+
+They are installed automatically by the seed (`yarn prisma db seed` runs `scripts/sample-games.ts`, which uploads `samples/<game>/*` to cloud storage and upserts the matching row in `games`). You can also upload them manually: **Admin → Upload game** → `samples/<game>.zip` with any unused slug. Uploaded zips must have `index.html` at the root.
 
 The home page lists every game in the `games` table and refreshes the list every 10 s (and when the tab regains focus), so newly uploaded games appear without reloading.
 

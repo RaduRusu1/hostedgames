@@ -1,17 +1,57 @@
 * { box-sizing: border-box; }
+html, body { margin: 0; }
 body {
-  margin: 0; min-height: 100vh; display: flex; justify-content: center;
-  background: #0b1020; color: #e5e7eb; font-family: system-ui, sans-serif;
+  min-height: 100vh; background: #0b1020; color: #e5e7eb;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
-main { width: min(94vw, 560px); padding: 24px 0; text-align: center; }
-h1 { margin: 0 0 12px; color: #a78bfa; }
-.controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; align-items: center; }
+.layout {
+  display: grid; grid-template-columns: auto 300px; gap: 20px;
+  justify-content: center; align-items: start; padding: 16px;
+}
+.board-wrap { width: clamp(280px, min(calc(100vh - 32px), calc(100vw - 368px)), 640px); }
+.panel { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+h1 { margin: 0; color: #a78bfa; font-size: 26px; }
+h2 { margin: 6px 0 0; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #9ca3af; }
+.controls, .buttons { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; }
+label { font-size: 12px; color: #9ca3af; display: flex; flex-direction: column; gap: 4px; }
 select, button {
   background: #1e2440; color: #e5e7eb; border: 1px solid #343b63;
   border-radius: 8px; padding: 8px 12px; font-size: 14px; cursor: pointer;
 }
-button:hover { border-color: #a78bfa; }
-#status { min-height: 1.4em; font-weight: 600; color: #22d3ee; }
+button:hover:not(:disabled) { border-color: #a78bfa; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.primary { background: #7c3aed; border-color: #7c3aed; }
+#status { margin: 0; min-height: 1.4em; font-weight: 600; color: #22d3ee; }
+.hint { margin: 0; font-size: 13px; color: #c4b5fd; min-height: 1.2em; }
+.notes {
+  list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px;
+  max-height: calc(100vh - 340px); min-height: 120px; overflow-y: auto;
+}
+.notes li {
+  background: #141a33; border-radius: 8px; padding: 8px 10px; font-size: 13px;
+  display: grid; grid-template-columns: 1fr auto auto; gap: 2px 8px; align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+}
+.notes .mv { font-weight: 600; font-family: ui-monospace, monospace; }
+.notes .ev { font-family: ui-monospace, monospace; color: #9ca3af; font-size: 12px; }
+.notes .txt { grid-column: 1 / -1; color: #cbd5e1; }
+.notes li.empty { display: block; background: transparent; box-shadow: none; color: #6b7280; padding: 0; }
+.q { font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: #1e2440; }
+.q-best { color: #22d3ee; }
+.q-excellent { color: #34d399; }
+.q-good { color: #a3e635; }
+.q-forced { color: #9ca3af; }
+.q-inaccuracy { color: #facc15; }
+.q-mistake { color: #fb923c; }
+.q-blunder { color: #f87171; }
+.help { font-size: 12px; color: #6b7280; margin: 0; }
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  .board-wrap { width: min(94vw, 560px); margin: 0 auto; }
+  .notes { max-height: 260px; }
+}
+
+/* ----- Checkers board ----- */
 #board {
   display: grid; grid-template-columns: repeat(8, 1fr); aspect-ratio: 1;
   border-radius: 10px; overflow: hidden; box-shadow: 0 10px 40px rgba(124, 58, 237, .25);
@@ -20,9 +60,11 @@ button:hover { border-color: #a78bfa; }
 .light { background: #c4b5fd; }
 .dark { background: #5b21b6; }
 .sq.target::after {
-  content: ""; width: 30%; height: 30%; border-radius: 50%; background: rgba(34, 211, 238, .8);
+  content: ""; position: absolute; width: 30%; height: 30%; border-radius: 50%; background: rgba(34, 211, 238, .8);
 }
 .sq.selected { outline: 3px solid #22d3ee; outline-offset: -3px; }
+.sq.hint { box-shadow: inset 0 0 0 4px #f0abfc; }
+.sq.last { box-shadow: inset 0 0 0 3px rgba(250, 204, 21, .7); }
 .sq.movable { cursor: pointer; }
 .piece {
   width: 78%; height: 78%; border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -30,4 +72,3 @@ button:hover { border-color: #a78bfa; }
 }
 .piece.r { background: #ef4444; color: #fde68a; }
 .piece.b { background: #111827; color: #fde68a; border: 2px solid #4b5563; }
-.help { font-size: 13px; color: #9ca3af; }

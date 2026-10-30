@@ -50,7 +50,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ path
     return new NextResponse(body, {
       headers: {
         'Content-Type': contentType,
-        'Cache-Control': 'public, max-age=3600',
+        // HTML entry pages always revalidate so a re-uploaded game shows up immediately; assets stay cached for an hour.
+        'Cache-Control': contentType.startsWith('text/html') ? 'no-cache' : 'public, max-age=3600',
       },
     });
   } catch (err: any) {
