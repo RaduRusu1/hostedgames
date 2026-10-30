@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { installSampleGames } from './sample-games';
 
 const prisma = new PrismaClient();
 
@@ -31,6 +32,9 @@ async function main() {
       description: 'Play chess against other registered users or the computer',
     },
   });
+
+  // Sample uploadable games (samples/checkers → cloud storage + games table)
+  await installSampleGames(prisma);
 
   console.log('Seed completed.');
 }

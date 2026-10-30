@@ -15,7 +15,7 @@ export async function GET() {
         cloudStoragePath: true,
       },
     });
-    return NextResponse.json(games);
+    return NextResponse.json(games, { headers: { 'Cache-Control': 'no-store' } });
   } catch (err: any) {
     console.error('Games list error:', err);
     return NextResponse.json({ error: 'Failed to load games' }, { status: 500 });

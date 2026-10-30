@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Gamepad2, Swords, ArrowRight, Users, Trophy, Globe } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 type GameCard = {
   id: string;
@@ -17,8 +18,35 @@ const GAME_ICONS: Record<string, React.ReactNode> = {
   chess: <Swords className="w-8 h-8" />,
 };
 
-export function HomeClient({ games }: { games: GameCard[] }) {
-  const { data: session } = useSession();
+export function HomeClient({ games: initialGames }: { games: GameCard[] }) {
+  const { data: session } = useSession() || {};
+  const [games, setGames] = useState<GameCard[]>(initialGames);
+
+  // Keep the list fresh: newly uploaded games appear without a manual reload.
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch('/api/games', { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!cancelled && Array.isArray(data)) setGames(data);
+      } catch (err) {
+        console.error('Failed to refresh games list', err);
+      }
+    };
+    load();
+    const id = setInterval(load, 10000);
+    const onVisible = () => { if (document.visibilityState === 'visible') load(); };
+    window.addEventListener('focus', load);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+      window.removeEventListener('focus', load);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen">

@@ -53,4 +53,8 @@ API: `/api/chess/{create,join,list,poll,move,resign,draw,history}`, `/api/admin/
 - Rules: mandatory captures, multi-jump chains, crowning to kings. Modes: vs computer (black, 4-ply alpha-beta minimax) or two players on one device. Undo + New game; state kept in `localStorage` (`hostedgames-checkers`).
 - `samples/checkers.zip` is the ready-to-upload archive (rebuild with `cd samples/checkers && zip -r ../checkers.zip .`).
 
-No schema or seed changes were needed for the sample – uploaded games use the existing `games` table.
+Installation: `scripts/sample-games.ts` (`installSampleGames`) is called from `scripts/seed.ts`. It reads `../samples/<dir>`, uploads every file to `public/games/<slug>/…` and upserts the `games` row (`cloudStoragePath` set), so re-running the seed is idempotent. No schema change was needed.
+
+## Home page game list
+
+`app/page.tsx` is rendered dynamically from the `games` table; `HomeClient` then re-fetches `GET /api/games` (`Cache-Control: no-store`) every 10 s and on window focus / tab visibility, so a game uploaded from `/admin` shows up on open home pages within seconds.

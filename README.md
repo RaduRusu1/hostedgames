@@ -21,7 +21,8 @@ nextjs_space/
   components/chess/    board wrapper, commentary panel, annotation hook
   lib/chess-engine/    in-browser chess engine, opening book, commentary, worker
   prisma/schema.prisma database schema
-  scripts/seed.ts      seed data (admin account)
+  scripts/seed.ts      seed data (admin account, chess entry, sample games)
+  scripts/sample-games.ts installs samples/* into cloud storage + games table
 samples/
   checkers/            sample uploadable game (index.html, style.css, game.js)
   checkers.zip         ready-to-upload zip of the sample
@@ -34,7 +35,9 @@ docs/
 
 ## Sample game: Checkers
 
-`samples/checkers` is a plain HTML/JS checkers (English draughts) game – vs the computer or a second player on the same device, with mandatory captures, multi-jumps, kings and Undo. To install it: log in as an admin → **Admin → Upload game** → choose `samples/checkers.zip`, slug `checkers` → play at `/games/checkers`. Uploaded zips must have `index.html` at the root.
+`samples/checkers` is a plain HTML/JS checkers (English draughts) game – vs the computer or a second player on the same device, with mandatory captures, multi-jumps, kings and Undo. It is installed automatically by the seed (`yarn prisma db seed` runs `scripts/sample-games.ts`, which uploads `samples/checkers/*` to cloud storage and upserts the `checkers` row in `games`) and is playable at `/games/checkers`. You can also upload it manually: **Admin → Upload game** → `samples/checkers.zip` with any unused slug. Uploaded zips must have `index.html` at the root.
+
+The home page lists every game in the `games` table and refreshes the list every 10 s (and when the tab regains focus), so newly uploaded games appear without reloading.
 
 ## Running locally
 

@@ -33,8 +33,8 @@
 
 ## Manual – Game upload (Checkers sample)
 
-1. Log in as admin → `/admin` → upload `samples/checkers.zip` with name *Checkers*, slug `checkers`.
-2. Home page lists *Checkers*; `/games/checkers` loads the board in the iframe.
+1. After `yarn prisma db seed`, the home page lists *Checkers* and `/games/checkers` loads the board in the iframe.
+2. Keep the home page open in one tab; in another, upload `samples/checkers.zip` from `/admin` with slug `checkers-2` → the new card appears on the home page within ~10 s without reloading.
 3. Vs computer: a capture is forced when available; multi-jumps continue; the computer replies as black.
 4. Reach the far row → piece is crowned and moves backwards.
 5. Undo restores the previous position; refresh resumes the game; New game resets.
