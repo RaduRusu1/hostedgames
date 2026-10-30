@@ -1,0 +1,88 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  min-height: 100vh; background: #0b1020; color: #e5e7eb;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.layout {
+  display: grid; grid-template-columns: auto 300px; gap: 20px;
+  justify-content: center; align-items: start; padding: 16px;
+}
+.board-wrap { width: clamp(280px, min(calc(100vh - 70px), calc(100vw - 368px)), 680px); }
+.panel { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+h1 { margin: 0; color: #a78bfa; font-size: 26px; }
+h2 { margin: 6px 0 0; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #9ca3af; }
+.controls, .buttons { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; }
+label { font-size: 12px; color: #9ca3af; display: flex; flex-direction: column; gap: 4px; }
+select, button {
+  background: #1e2440; color: #e5e7eb; border: 1px solid #343b63;
+  border-radius: 8px; padding: 8px 12px; font-size: 14px; cursor: pointer;
+}
+button:hover:not(:disabled) { border-color: #a78bfa; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.primary { background: #7c3aed; border-color: #7c3aed; }
+#status { margin: 0; min-height: 1.4em; font-weight: 600; color: #22d3ee; }
+.hint { margin: 0; font-size: 13px; color: #c4b5fd; min-height: 1.2em; }
+.notes {
+  list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px;
+  max-height: calc(100vh - 380px); min-height: 120px; overflow-y: auto;
+}
+.notes li {
+  background: #141a33; border-radius: 8px; padding: 8px 10px; font-size: 13px;
+  display: grid; grid-template-columns: 1fr auto auto; gap: 2px 8px; align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+}
+.notes .mv { font-weight: 600; font-family: ui-monospace, monospace; }
+.notes .ev { font-family: ui-monospace, monospace; color: #9ca3af; font-size: 12px; }
+.notes .txt { grid-column: 1 / -1; color: #cbd5e1; }
+.notes li.empty { display: block; background: transparent; box-shadow: none; color: #6b7280; padding: 0; }
+.q { font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: #1e2440; }
+.q-best { color: #22d3ee; }
+.q-excellent { color: #34d399; }
+.q-good { color: #a3e635; }
+.q-forced { color: #9ca3af; }
+.q-inaccuracy { color: #facc15; }
+.q-mistake { color: #fb923c; }
+.q-blunder { color: #f87171; }
+.help { font-size: 12px; color: #6b7280; margin: 0; }
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  .board-wrap { width: min(94vw, 560px); margin: 0 auto; }
+  .notes { max-height: 260px; }
+}
+
+/* ----- Morris board ----- */
+#board {
+  position: relative; aspect-ratio: 1; background: #d6a85c; border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(124, 58, 237, .25);
+}
+.lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.lines rect, .lines line { fill: none; stroke: #5b3a1a; stroke-width: .06; }
+#points { position: absolute; inset: 0; }
+.pt {
+  position: absolute; width: 10%; height: 10%; transform: translate(-50%, -50%);
+  border-radius: 50%; display: grid; place-items: center;
+}
+.pt::before { content: ""; width: 26%; height: 26%; border-radius: 50%; background: #5b3a1a; }
+.pt.open { cursor: pointer; }
+.pt.open:hover::before { background: #7c3aed; width: 40%; height: 40%; }
+.pt.target::before { background: #22d3ee; width: 34%; height: 34%; }
+.pt.hint { box-shadow: 0 0 0 3px #a78bfa inset; }
+.pt.last { box-shadow: 0 0 0 3px #ef4444; }
+.pt.removed::after {
+  content: "×"; position: absolute; color: #b91c1c; font-weight: 800; font-size: clamp(14px, 3vw, 28px);
+}
+.piece {
+  position: absolute; inset: 8%; border-radius: 50%; box-shadow: 0 2px 4px rgba(0, 0, 0, .5);
+}
+.piece.w { background: radial-gradient(circle at 35% 30%, #ffffff, #cfcfd4 75%); }
+.piece.b { background: radial-gradient(circle at 35% 30%, #5b5b5b, #050505 70%); }
+.pt.mine { cursor: pointer; }
+.pt.selected .piece { box-shadow: 0 0 0 3px #22d3ee, 0 0 12px #22d3ee; }
+.pt.removable { cursor: crosshair; }
+.pt.removable .piece { box-shadow: 0 0 0 3px #f87171, 0 0 12px #f87171; }
+.pt.mill .piece::after {
+  content: ""; position: absolute; inset: 38%; border-radius: 50%; background: #a78bfa;
+}
+.hands { display: flex; justify-content: space-between; margin-top: 8px; font-size: 13px; color: #9ca3af; }
+.hands b { color: #e5e7eb; }

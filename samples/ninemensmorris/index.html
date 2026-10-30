@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nine Men's Morris · HostedGames sample</title>
+  <link rel="stylesheet" href="style.css?v=1" />
+</head>
+<body>
+  <main class="layout">
+    <section class="board-wrap">
+      <div id="board" aria-label="Nine Men's Morris board">
+        <svg class="lines" viewBox="-0.5 -0.5 7 7" aria-hidden="true">
+          <rect x="0" y="0" width="6" height="6" />
+          <rect x="1" y="1" width="4" height="4" />
+          <rect x="2" y="2" width="2" height="2" />
+          <line x1="3" y1="0" x2="3" y2="2" />
+          <line x1="3" y1="4" x2="3" y2="6" />
+          <line x1="0" y1="3" x2="2" y2="3" />
+          <line x1="4" y1="3" x2="6" y2="3" />
+        </svg>
+        <div id="points"></div>
+      </div>
+      <div class="hands">
+        <span>White in hand: <b id="hand-w">9</b></span>
+        <span>Black in hand: <b id="hand-b">9</b></span>
+      </div>
+    </section>
+    <aside class="panel">
+      <h1>Nine Men's Morris</h1>
+      <div class="controls">
+        <label>Opponent
+          <select id="mode">
+            <option value="ai">Computer</option>
+            <option value="human">Second player (same device)</option>
+          </select>
+        </label>
+        <label id="level-wrap">Level
+          <select id="level"></select>
+        </label>
+      </div>
+      <div class="buttons">
+        <button id="undo">Undo</button>
+        <button id="suggest" class="primary">Suggest</button>
+        <button id="restart">New game</button>
+      </div>
+      <p id="status" role="status"></p>
+      <p id="hint" class="hint"></p>
+      <h2>Commentary</h2>
+      <ol id="notes" class="notes"></ol>
+      <p class="help">White moves first (vs the computer you are White). Place your nine pieces, then slide them along the lines; with three left you may fly anywhere. Three in a row (a mill) removes an enemy piece. Reduce your opponent to two pieces or leave them without a move to win. 50 moves without a capture is a draw. A positive eval favours White.</p>
+    </aside>
+  </main>
+  <script src="game.js?v=1"></script>
+</body>
+</html>

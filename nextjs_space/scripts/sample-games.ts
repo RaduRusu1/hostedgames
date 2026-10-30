@@ -26,6 +26,18 @@ export const SAMPLE_GAMES = [
     description: 'Five in a row on a 15×15 board — play a friend or the computer (levels 1–10), with Undo, Suggest and move-by-move commentary.',
     dir: 'gomoku',
   },
+  {
+    slug: 'chinesecheckers',
+    name: 'Chinese Checkers',
+    description: 'Race your ten marbles across the star with steps and chained jumps — play a friend or the computer (levels 1–10), with last-move highlight, Undo, Suggest and commentary.',
+    dir: 'chinesecheckers',
+  },
+  {
+    slug: 'ninemensmorris',
+    name: "Nine Men's Morris",
+    description: 'Place, slide and fly your pieces to form mills — play a friend or the computer (levels 1–10), with last-move highlight, Undo, Suggest and commentary.',
+    dir: 'ninemensmorris',
+  },
 ];
 
 function listFiles(dir: string, base = dir): string[] {

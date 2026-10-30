@@ -28,6 +28,8 @@ samples/
   checkers.zip         ready-to-upload zip of the checkers sample
   gomoku/              sample uploadable game (index.html, style.css, game.js)
   gomoku.zip           ready-to-upload zip of the gomoku sample
+  chinesecheckers/     sample uploadable game (+ chinesecheckers.zip)
+  ninemensmorris/      sample uploadable game (+ ninemensmorris.zip)
 docs/
   PLANNING.md          requirements & design decisions
   IMPLEMENTATION.md    architecture & module notes
@@ -35,12 +37,14 @@ docs/
   TEST_PLAN.md         manual + automated test plan
 ```
 
-## Sample games: Checkers and Gomoku
+## Sample games: Checkers, Gomoku, Chinese Checkers, Nine Men's Morris
 
-Both samples are plain HTML/CSS/JS games with the same feature set: play a second player on the same device or the computer at **levels 1–10**, **Undo** (vs the computer it takes back to your last move), **Suggest** (highlights the engine's best move with an explanation) and a **Commentary** panel that grades every move (Best / Excellent / Good / Inaccuracy / Mistake / Blunder / Forced) with an evaluation and a short explanation.
+All four samples are plain HTML/CSS/JS games with the same feature set: play a second player on the same device or the computer at **levels 1–10**, the **last move stays highlighted**, **Undo** (vs the computer it takes back to your last move), **Suggest** (highlights the engine's best move with an explanation) and a **Commentary** panel that grades every move (Best / Excellent / Good / Inaccuracy / Mistake / Blunder / Forced) with an evaluation and a short explanation.
 
 - `samples/checkers` – English draughts: mandatory captures, multi-jumps, kings. Playable at `/games/checkers`.
 - `samples/gomoku` – five in a row on a 15×15 board (Black moves first, five or more wins). Playable at `/games/gomoku`.
+- `samples/chinesecheckers` – two-player Chinese Checkers on the 121-hole star: step to a neighbouring hole or chain jumps over any marble; first to fill the opposite triangle wins. Playable at `/games/chinesecheckers`.
+- `samples/ninemensmorris` – Nine Men's Morris: place 9 pieces each, then slide (fly when down to 3); forming a mill removes an opponent piece; reduce the opponent to 2 pieces or leave them without a move to win. Playable at `/games/ninemensmorris`.
 
 They are installed automatically by the seed (`yarn prisma db seed` runs `scripts/sample-games.ts`, which uploads `samples/<game>/*` to cloud storage and upserts the matching row in `games`). You can also upload them manually: **Admin → Upload game** → `samples/<game>.zip` with any unused slug. Uploaded zips must have `index.html` at the root.
 

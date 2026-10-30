@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chinese Checkers · HostedGames sample</title>
+  <link rel="stylesheet" href="style.css?v=1" />
+</head>
+<body>
+  <main class="layout">
+    <section class="board-wrap">
+      <div id="board" aria-label="Chinese Checkers board"></div>
+    </section>
+    <aside class="panel">
+      <h1>Chinese Checkers</h1>
+      <div class="controls">
+        <label>Opponent
+          <select id="mode">
+            <option value="ai">Computer</option>
+            <option value="human">Second player (same device)</option>
+          </select>
+        </label>
+        <label id="level-wrap">Level
+          <select id="level"></select>
+        </label>
+      </div>
+      <div class="buttons">
+        <button id="undo">Undo</button>
+        <button id="suggest" class="primary">Suggest</button>
+        <button id="restart">New game</button>
+      </div>
+      <p id="status" role="status"></p>
+      <p id="hint" class="hint"></p>
+      <h2>Commentary</h2>
+      <ol id="notes" class="notes"></ol>
+      <p class="help">Red moves first (vs the computer you are Red, starting at the bottom). Click a marble, then a highlighted hole. Step to a neighbouring hole, or jump over any single marble — chain as many jumps as you like. First to fill the opposite point of the star wins; a marble that has reached it may not leave. Holes are labelled by row a (bottom) to q (top) and column 1–25. A positive eval (in rows) favours Red.</p>
+    </aside>
+  </main>
+  <script src="game.js?v=1"></script>
+</body>
+</html>

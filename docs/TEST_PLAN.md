@@ -43,9 +43,27 @@
 
 Headless check (used during development): drive `game.js` with a minimal DOM stub in node, playing Suggest vs each level – levels 1, 5 and 10 all finish a game, and Undo returns to Black's turn.
 
+## Manual – Game upload (Chinese Checkers sample)
+
+1. As admin, upload `samples/chinesecheckers.zip` (slug `chinesecheckers`) → 201 with 3 files; the home page shows the card within ~10 s and `/games/chinesecheckers` loads the star board.
+2. Click a red marble → reachable holes are marked (steps and multi-jump destinations); click one → the marble moves, the from/to holes and jump path stay highlighted, the move is graded, and the computer replies with Blue.
+3. Suggest highlights a move; Undo vs computer returns to Red's turn (one move in two-player mode); refresh restores the game.
+4. Fill the top triangle → status shows the winner and the board locks.
+
+Headless check: Suggest vs levels 1, 5 and 10 each finished a game (level 10 turn ≤ 2.5 s); verified by uploading through `/api/admin/games/upload` (201, slug listed in `/api/games`).
+
+## Manual – Game upload (Nine Men's Morris sample)
+
+1. As admin, upload `samples/ninemensmorris.zip` (slug `ninemensmorris`) → 201 with 3 files; card appears on the home page within ~10 s; `/games/ninemensmorris` loads the board.
+2. Place pieces → the last placed point is highlighted; forming a mill asks you to click an opponent piece to remove (pieces in mills protected unless all are).
+3. After all 9 are placed, click a piece then an adjacent empty point to slide; with 3 pieces any empty point is allowed (flying).
+4. Suggest, Undo (back to White's turn vs computer), level 1–10, commentary grading and refresh-restore behave as in the other samples.
+
+Headless check: Suggest vs levels 1 and 10 played full games; Undo verified; uploaded via the admin API (201, slug listed in `/api/games`).
+
 ## Manual – Game upload (Checkers sample)
 
-1. After `yarn prisma db seed`, the home page lists *Checkers* and *Gomoku*, and `/games/checkers` loads the board in the iframe.
+1. After `yarn prisma db seed`, the home page lists *Checkers*, *Gomoku*, *Chinese Checkers* and *Nine Men's Morris*, and `/games/checkers` loads the board in the iframe.
 2. Keep the home page open in one tab; in another, upload `samples/checkers.zip` from `/admin` with slug `checkers-2` → the new card appears on the home page within ~10 s without reloading.
 3. Vs computer: a capture is forced when available; multi-jumps continue; the computer replies as black.
 4. Reach the far row → piece is crowned and moves backwards.
