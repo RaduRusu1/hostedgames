@@ -1,0 +1,100 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+    output = "/home/ubuntu/hostedgames/nextjs_space/node_modules/.prisma/client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  username      String    @unique
+  passwordHash  String    @map("password_hash")
+  role          String    @default("user")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  scores        Score[]
+  gameStates    GameState[]
+  whiteGames    ChessGame[] @relation("WhitePlayer")
+  blackGames    ChessGame[] @relation("BlackPlayer")
+  wonGames      ChessGame[] @relation("Winner")
+  uploadedGames Game[]
+
+  @@map("users")
+}
+
+model Score {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  gameId    String   @map("game_id")
+  score     Int
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([gameId])
+  @@map("scores")
+}
+
+model GameState {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  gameId    String   @map("game_id")
+  stateJson Json     @map("state_json")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, gameId])
+  @@index([userId])
+  @@map("game_states")
+}
+
+model Game {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  description     String?
+  cloudStoragePath String? @map("cloud_storage_path")
+  isPublic        Boolean  @default(true) @map("is_public")
+  uploadedAt      DateTime @default(now()) @map("uploaded_at")
+  uploadedBy      String?  @map("uploaded_by")
+
+  uploader    User?    @relation(fields: [uploadedBy], references: [id], onDelete: SetNull)
+  scores      Score[]
+  gameStates  GameState[]
+
+  @@index([uploadedBy])
+  @@map("games")
+}
+
+model ChessGame {
+  id            String   @id @default(cuid())
+  whitePlayerId String   @map("white_player_id")
+  blackPlayerId String?  @map("black_player_id")
+  pgn           String   @default("")
+  fenHistory    Json     @default("[]") @map("fen_history")
+  moveHistory   Json     @default("[]") @map("move_history")
+  status        String   @default("waiting")
+  winnerId      String?  @map("winner_id")
+  currentFen    String   @default("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1") @map("current_fen")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  whitePlayer   User     @relation("WhitePlayer", fields: [whitePlayerId], references: [id])
+  blackPlayer   User?    @relation("BlackPlayer", fields: [blackPlayerId], references: [id])
+  winner        User?    @relation("Winner", fields: [winnerId], references: [id])
+
+  @@index([whitePlayerId])
+  @@index([blackPlayerId])
+  @@index([winnerId])
+  @@index([status])
+  @@map("chess_games")
+}

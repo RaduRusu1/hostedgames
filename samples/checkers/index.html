@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkers · HostedGames sample</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>Checkers</h1>
+    <div class="controls">
+      <label>Opponent
+        <select id="mode">
+          <option value="ai">Computer</option>
+          <option value="human">Second player (same device)</option>
+        </select>
+      </label>
+      <button id="undo">Undo</button>
+      <button id="restart">New game</button>
+    </div>
+    <p id="status" role="status"></p>
+    <div id="board" aria-label="Checkers board"></div>
+    <p class="help">Red moves first. Captures are mandatory; keep jumping while you can. Reach the far row to crown a king.</p>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
